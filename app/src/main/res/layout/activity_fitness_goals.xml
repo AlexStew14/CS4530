@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FitnessGoalsActivity">
+
+    <Button
+        android:id="@+id/btn_BMI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get BMI"/>
+
+    <Button
+        android:id="@+id/btn_fitness_goals_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_below="@id/btn_BMI"/>
+
+</RelativeLayout>
