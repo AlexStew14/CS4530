@@ -1,6 +1,7 @@
 package com.example.a4530project1
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -27,8 +28,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
                 startActivity(intent)
             }
             R.id.btn_hikes -> {
-                val intent = Intent(this@MainActivity, HikeActivity::class.java)
-                startActivity(intent)
+                val gmmIntentURI = Uri.parse("geo:0,0?q=hikes")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentURI)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
             }
             R.id.btn_fitness_goals -> {
                 val intent = Intent(this@MainActivity, FitnessGoalsActivity::class.java)
