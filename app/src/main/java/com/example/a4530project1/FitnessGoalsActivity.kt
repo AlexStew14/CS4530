@@ -27,6 +27,5 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
         }
-
     }
 }
