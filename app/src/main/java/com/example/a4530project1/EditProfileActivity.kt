@@ -1,14 +1,13 @@
 package com.example.a4530project1
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
@@ -23,7 +22,7 @@ data class User (
     val sex: String
 )
 
-class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
+class EditProfileActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemSelectedListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
@@ -31,11 +30,11 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<Button>(R.id.btn_edit_profile_submit).setOnClickListener(this)
 
         // get file contents
+        // TODO check if file exists
         val userJSON = File(filesDir,"userData.txt").readText(Charsets.UTF_8)
 
         val mapper = jacksonObjectMapper()
         val userFromJSON: User = mapper.readValue(userJSON)
-        Log.d("D", userFromJSON.toString())
 
         findViewById<EditText>(R.id.et_name).setText(userFromJSON.name)
         findViewById<EditText>(R.id.et_age).setText(userFromJSON.age.toString())
@@ -44,6 +43,19 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<EditText>(R.id.et_height).setText(userFromJSON.height)
         findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
         findViewById<EditText>(R.id.et_sex).setText(userFromJSON.sex)
+
+        val spinner: Spinner = findViewById(R.id.sp_height)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.heights_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
     }
 
     override fun onClick(v: View?) {
@@ -73,12 +85,21 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                     File(filesDir,"userData.txt").printWriter().use { out ->
                         out.println(userJson)
                     }
-
                     val intent = Intent(this@EditProfileActivity, ProfileActivity::class.java)
                     startActivity(intent)
                 }
             }
         }
     }
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        findViewById<EditText>(R.id.et_height).setText(parent.getItemAtPosition(pos).toString())
+    }
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
+        findViewById<EditText>(R.id.et_height).setText("")
+    }
+
 }
 

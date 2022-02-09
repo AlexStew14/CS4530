@@ -7,16 +7,28 @@
     tools:context=".FitnessGoalsActivity">
 
     <Button
-        android:id="@+id/btn_BMI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get BMI"/>
-
-    <Button
         android:id="@+id/btn_fitness_goals_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        android:layout_below="@id/btn_BMI"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:text="edit"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:padding="20dp"
+        >
+        <TextView
+            android:id="@+id/tv_bmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BMI: " />
+
+    </LinearLayout>
 
 </RelativeLayout>

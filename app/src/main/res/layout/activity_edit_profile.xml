@@ -32,6 +32,7 @@
             android:id="@+id/et_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="Age" />
         <EditText
             android:id="@+id/et_city"
@@ -57,15 +58,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Health Info"/>
-        <EditText
-            android:id="@+id/et_height"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Height" />
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/et_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Height"
+                />
+            <Spinner
+                android:id="@+id/sp_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
         <EditText
             android:id="@+id/et_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="Weight" />
         <EditText
             android:id="@+id/et_sex"

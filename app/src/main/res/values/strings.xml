@@ -9,4 +9,27 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string-array name="heights_array">
+        <item>4\'10\"</item>
+        <item>4\'11\"</item>
+        <item>5\'0\"</item>
+        <item>5\'1\"</item>
+        <item>5\'2\"</item>
+        <item>5\'3\"</item>
+        <item>5\'4\"</item>
+        <item>5\'5\"</item>
+        <item>5\'6\"</item>
+        <item>5\'7\"</item>
+        <item>5\'8\"</item>
+        <item>5\'9\"</item>
+        <item>5\'10\"</item>
+        <item>5\'11\"</item>
+        <item>6\'0\"</item>
+        <item>6\'1\"</item>
+        <item>6\'2\"</item>
+        <item>6\'3\"</item>
+        <item>6\'4\"</item>
+        <item>6\'5\"</item>
+    </string-array>
 </resources>

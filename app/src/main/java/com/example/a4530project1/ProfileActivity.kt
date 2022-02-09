@@ -19,6 +19,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         findViewById<Button>(R.id.btn_profile_edit).setOnClickListener(this)
 
+        //TODO check if file exists
         val userJSON = File(filesDir,"userData.txt").readText(Charsets.UTF_8)
 
         val mapper = jacksonObjectMapper()
