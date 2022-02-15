@@ -29,6 +29,43 @@
             android:layout_height="wrap_content"
             android:text="BMI: " />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weight Goal"/>
+        <TextView
+            android:id="@+id/tv_weight_goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Level"/>
+        <TextView
+            android:id="@+id/tv_activity_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pounds Per Week"/>
+        <TextView
+            android:id="@+id/tv_pounds_per_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calorie Goal"/>
+        <TextView
+            android:id="@+id/tv_calories_needed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
     </LinearLayout>
 
 </RelativeLayout>

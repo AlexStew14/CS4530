@@ -58,33 +58,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Health Info"/>
-        <LinearLayout
+        <Spinner
+            android:id="@+id/sp_height"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <EditText
-                android:id="@+id/et_height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Height"
-                />
-            <Spinner
-                android:id="@+id/sp_height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:hint="Weight" />
-        <EditText
-            android:id="@+id/et_sex"
+        <Spinner
+            android:id="@+id/sp_sex"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Sex" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -99,6 +86,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Profile Picture"/>
+        <ImageView
+            android:id="@+id/img_profile_picture_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

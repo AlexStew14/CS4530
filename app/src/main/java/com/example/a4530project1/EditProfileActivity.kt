@@ -1,16 +1,15 @@
 package com.example.a4530project1
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.ImageDecoder
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
+
 
 data class User (
     val name: String,
@@ -22,7 +21,7 @@ data class User (
     val sex: String
 )
 
-class EditProfileActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemSelectedListener{
+class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
@@ -40,11 +39,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener, AdapterVi
         findViewById<EditText>(R.id.et_age).setText(userFromJSON.age.toString())
         findViewById<EditText>(R.id.et_city).setText(userFromJSON.city)
         findViewById<EditText>(R.id.et_country).setText(userFromJSON.country)
-        findViewById<EditText>(R.id.et_height).setText(userFromJSON.height)
         findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
-        findViewById<EditText>(R.id.et_sex).setText(userFromJSON.sex)
 
-        val spinner: Spinner = findViewById(R.id.sp_height)
+        val height_spinner: Spinner = findViewById(R.id.sp_height)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -54,8 +51,42 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener, AdapterVi
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
-            spinner.adapter = adapter
+            height_spinner.adapter = adapter
+            height_spinner.setSelection(adapter.getPosition(userFromJSON.height))
         }
+
+        val sex_spinner: Spinner = findViewById(R.id.sp_sex)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.sex_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            sex_spinner.adapter = adapter
+            sex_spinner.setSelection(adapter.getPosition(userFromJSON.sex))
+        }
+
+        val img_file = File(filesDir,"profilePicture.png")
+        if (!img_file.exists()) {
+            Thread(Runnable {
+                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
+                val source = ImageDecoder.createSource(img_default_file)
+                val drawable = ImageDecoder.decodeDrawable(source)
+                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageDrawable(drawable)
+            }).start()
+        }
+        else {
+            Thread(Runnable {
+                val source = ImageDecoder.createSource(img_file)
+                val drawable = ImageDecoder.decodeDrawable(source)
+                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageDrawable(drawable)
+            }).start()
+        }
+
+
     }
 
     override fun onClick(v: View?) {
@@ -74,9 +105,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener, AdapterVi
                     val age = findViewById<EditText>(R.id.et_age).text.toString().toInt()
                     val city = findViewById<EditText>(R.id.et_city).text.toString()
                     val country = findViewById<EditText>(R.id.et_country).text.toString()
-                    val height = findViewById<EditText>(R.id.et_height).text.toString()
+                    val height = findViewById<Spinner>(R.id.sp_height).selectedItem.toString()
                     val weight = findViewById<EditText>(R.id.et_weight).text.toString().toInt()
-                    val sex = findViewById<EditText>(R.id.et_sex).text.toString()
+                    val sex = findViewById<Spinner>(R.id.sp_sex).selectedItem.toString()
                     val user = User(name, age, city, country, height, weight, sex)
 
                     val mapper = jacksonObjectMapper()
@@ -85,20 +116,10 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener, AdapterVi
                     File(filesDir,"userData.txt").printWriter().use { out ->
                         out.println(userJson)
                     }
-                    val intent = Intent(this@EditProfileActivity, ProfileActivity::class.java)
-                    startActivity(intent)
+                    finish()
                 }
             }
         }
-    }
-    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        findViewById<EditText>(R.id.et_height).setText(parent.getItemAtPosition(pos).toString())
-    }
-    override fun onNothingSelected(parent: AdapterView<*>) {
-        // Another interface callback
-        findViewById<EditText>(R.id.et_height).setText("")
     }
 
 }

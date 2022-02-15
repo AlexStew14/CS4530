@@ -32,4 +32,25 @@
         <item>6\'4\"</item>
         <item>6\'5\"</item>
     </string-array>
+    <string-array name="sex_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="weight_goal_array">
+        <item>Lose Weight</item>
+        <item>Maintain Weight</item>
+        <item>Gain Weight</item>
+    </string-array>
+    <string-array name="activity_level_array">
+        <item>Sedentary</item>
+        <item>Active</item>
+    </string-array>
+    <string-array name="pounds_per_week_array">
+        <item>0.0</item>
+        <item>0.5</item>
+        <item>1.0</item>
+        <item>1.5</item>
+        <item>2.0</item>
+    </string-array>
 </resources>

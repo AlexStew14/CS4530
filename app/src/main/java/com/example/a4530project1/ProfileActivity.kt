@@ -1,12 +1,14 @@
 package com.example.a4530project1
 
 import android.content.Intent
+import android.graphics.ImageDecoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -27,7 +29,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
             val mapper = jacksonObjectMapper()
             val userFromJSON: User = mapper.readValue(userJSON)
-            Log.d("D", userFromJSON.toString())
 
             findViewById<TextView>(R.id.tv_name).text = userFromJSON.name
             findViewById<TextView>(R.id.tv_age).text = userFromJSON.age.toString()
@@ -39,7 +40,22 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
-
+        val img_file = File(filesDir,"profilePicture.png")
+        if (!img_file.exists()) {
+            Thread(Runnable {
+                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
+                val source = ImageDecoder.createSource(img_default_file)
+                val drawable = ImageDecoder.decodeDrawable(source)
+                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
+            }).start()
+        }
+        else {
+            Thread(Runnable {
+                val source = ImageDecoder.createSource(img_file)
+                val drawable = ImageDecoder.decodeDrawable(source)
+                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
+            }).start()
+        }
     }
 
     override fun onClick(v: View?) {
