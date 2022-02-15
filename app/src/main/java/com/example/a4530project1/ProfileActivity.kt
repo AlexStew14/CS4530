@@ -20,19 +20,26 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.btn_profile_edit).setOnClickListener(this)
 
         //TODO check if file exists
-        val userJSON = File(filesDir,"userData.txt").readText(Charsets.UTF_8)
+        val file = File(filesDir,"userData.txt")
 
-        val mapper = jacksonObjectMapper()
-        val userFromJSON: User = mapper.readValue(userJSON)
-        Log.d("D", userFromJSON.toString())
+        if (file.exists()) {
+            val userJSON = file.readText(Charsets.UTF_8)
 
-        findViewById<TextView>(R.id.tv_name).text = userFromJSON.name
-        findViewById<TextView>(R.id.tv_age).text = userFromJSON.age.toString()
-        findViewById<TextView>(R.id.tv_city).text = userFromJSON.city
-        findViewById<TextView>(R.id.tv_country).text = userFromJSON.country
-        findViewById<TextView>(R.id.tv_height).text = userFromJSON.height
-        findViewById<TextView>(R.id.tv_weight).text = userFromJSON.weight.toString()
-        findViewById<TextView>(R.id.tv_sex).text = userFromJSON.sex
+            val mapper = jacksonObjectMapper()
+            val userFromJSON: User = mapper.readValue(userJSON)
+            Log.d("D", userFromJSON.toString())
+
+            findViewById<TextView>(R.id.tv_name).text = userFromJSON.name
+            findViewById<TextView>(R.id.tv_age).text = userFromJSON.age.toString()
+            findViewById<TextView>(R.id.tv_city).text = userFromJSON.city
+            findViewById<TextView>(R.id.tv_country).text = userFromJSON.country
+            findViewById<TextView>(R.id.tv_height).text = userFromJSON.height
+            findViewById<TextView>(R.id.tv_weight).text = userFromJSON.weight.toString()
+            findViewById<TextView>(R.id.tv_sex).text = userFromJSON.sex
+        }
+
+
+
     }
 
     override fun onClick(v: View?) {

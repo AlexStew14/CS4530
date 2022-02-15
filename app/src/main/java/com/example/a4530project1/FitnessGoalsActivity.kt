@@ -22,7 +22,7 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
         findViewById<Button>(R.id.btn_fitness_goals_edit).setOnClickListener(this)
 
-        //TODO check if this is users first time opening fitness module,
+        // TODO check if this is users first time opening fitness module,
         // if so prompt for initial data else display everything
 
         // get file contents
