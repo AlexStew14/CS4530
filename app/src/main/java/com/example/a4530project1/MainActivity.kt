@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import java.io.File
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener{
@@ -19,6 +20,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<Button>(R.id.btn_fitness_goals).setOnClickListener(this)
         findViewById<Button>(R.id.btn_profile).setOnClickListener(this)
 
+
+        val file = File(filesDir,"userData.txt")
+
+        if (!file.exists()) {
+            val intent = Intent(this@MainActivity, SignInActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onClick(v: View?) {

@@ -1,45 +1,20 @@
 package com.example.a4530project1
 
-import android.app.Activity
 import android.graphics.ImageDecoder
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
 
-
-data class User (
-    val name: String,
-    val age: Int,
-    val city: String,
-    val country: String,
-    val height: String,
-    val weight: Int,
-    val sex: String
-)
-
-class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
+class SignInActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+        setContentView(R.layout.activity_sign_in)
 
-        findViewById<Button>(R.id.btn_edit_profile_submit).setOnClickListener(this)
-
-        // get file contents
-        // TODO check if file exists
-        val userJSON = File(filesDir,"userData.txt").readText(Charsets.UTF_8)
-
-        val mapper = jacksonObjectMapper()
-        val userFromJSON: User = mapper.readValue(userJSON)
-
-        findViewById<EditText>(R.id.et_name).setText(userFromJSON.name)
-        findViewById<EditText>(R.id.et_age).setText(userFromJSON.age.toString())
-        findViewById<EditText>(R.id.et_city).setText(userFromJSON.city)
-        findViewById<EditText>(R.id.et_country).setText(userFromJSON.country)
-        findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
+        findViewById<Button>(R.id.btn_sign_in_submit).setOnClickListener(this)
 
         val height_spinner: Spinner = findViewById(R.id.sp_height)
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -52,7 +27,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             height_spinner.adapter = adapter
-            height_spinner.setSelection(adapter.getPosition(userFromJSON.height))
+            //height_spinner.setSelection(adapter.getPosition(userFromJSON.height))
         }
 
         val sex_spinner: Spinner = findViewById(R.id.sp_sex)
@@ -66,32 +41,12 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             sex_spinner.adapter = adapter
-            sex_spinner.setSelection(adapter.getPosition(userFromJSON.sex))
+            //sex_spinner.setSelection(adapter.getPosition(userFromJSON.sex))
         }
-
-//        val img_file = File(filesDir,"profilePicture.png")
-//        if (!img_file.exists()) {
-//            Thread(Runnable {
-//                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
-//                val source = ImageDecoder.createSource(img_default_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageDrawable(drawable)
-//            }).start()
-//        }
-//        else {
-//            Thread(Runnable {
-//                val source = ImageDecoder.createSource(img_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageDrawable(drawable)
-//            }).start()
-//        }
-
-
     }
-
     override fun onClick(v: View?) {
         when (v?.id){
-            R.id.btn_edit_profile_submit -> {
+            R.id.btn_sign_in_submit -> {
                 val name = findViewById<EditText>(R.id.et_name).text.toString()
                 if (name.isEmpty()) {
                     val text = "Must enter name"
@@ -121,6 +76,4 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             }
         }
     }
-
 }
-
