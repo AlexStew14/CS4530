@@ -23,9 +23,18 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
         // TODO check if this is users first time opening fitness module,
         // if so prompt for initial data else display everything
 
-        // get file contents
-        // TODO check if file exists
+        val fg_file = File(filesDir,"fitnessGoalData.txt")
 
+        if (!fg_file.exists()) {
+            val intent = Intent(this@FitnessGoalsActivity, EditFitnessGoalsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // get file contents
         val user_file = File(filesDir, "userData.txt")
         if (user_file.exists()) {
             val userJSON = File(filesDir, "userData.txt").readText(Charsets.UTF_8)
@@ -35,7 +44,7 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
             val heightInInches = (user.height[0].toString()
                 .toDouble() * 12) + (user.height[2].toString().toDouble())
-            findViewById<TextView>(R.id.tv_bmi).text = "BMI: " + ((user.weight / heightInInches.pow(2.0)) * 703).roundToInt().toString()
+            findViewById<TextView>(R.id.tv_bmi).text = ((user.weight / heightInInches.pow(2.0)) * 703).roundToInt().toString()
 
             val fg_file = File(filesDir,"fitnessGoalData.txt")
 
@@ -75,7 +84,7 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
                     findViewById<TextView>(R.id.tv_calories_needed).text = calGoal.roundToInt().toString() + " WARNING: Too few calories"
                 }
                 else {
-                    findViewById<TextView>(R.id.tv_calories_needed).text = calGoal.toString()
+                    findViewById<TextView>(R.id.tv_calories_needed).text = calGoal.roundToInt().toString()
                 }
             }
         }

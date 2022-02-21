@@ -21,6 +21,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.function.Consumer
+import kotlin.math.roundToInt
 
 class WeatherActivity : AppCompatActivity() {
     private val apiKey: String = "86645aa7651e68753af7d48496c69f36"
@@ -64,7 +65,7 @@ class WeatherActivity : AppCompatActivity() {
             if (location != null){
                 val addresses: List<Address?> = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 if (addresses.isNotEmpty() && addresses[0] != null){
-                    cityTV.text = "city: " + addresses[0]!!.locality
+                    cityTV.text = "City: " + addresses[0]!!.locality
                     getWeather(addresses[0]!!.latitude, addresses[0]!!.longitude)
                 }
             }
@@ -97,7 +98,7 @@ class WeatherActivity : AppCompatActivity() {
                 val temp = main.getDouble("temp")
                 val weather = obj.getJSONArray("weather").getJSONObject(0)
                 val status = weather.getString("description")
-                tempTV.text = "Temp: " + temp + "f"
+                tempTV.text = "Temp: " + temp.roundToInt() + "f"
                 statusTV.text = "Weather Status: " + status
             }
 

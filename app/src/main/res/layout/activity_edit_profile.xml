@@ -4,93 +4,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_profile"
     tools:context=".EditProfileActivity">
 
     <TextView
+        android:id="@+id/edit_profile_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="profile edit"/>
+        android:layout_centerHorizontal="true"
+        android:text="Edit Profile"
+        android:fontFamily="@font/quicksand_regular"
+        android:textSize="40dp"
+        android:layout_marginTop="15dp"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:padding="20dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Personal Info"/>
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Name" />
-        <EditText
-            android:id="@+id/et_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Age" />
-        <EditText
-            android:id="@+id/et_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="City" />
-        <EditText
-            android:id="@+id/et_country"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Country" />
-    </LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/edit_profile_title">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:padding="20dp"
-        >
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Health Info"/>
-        <Spinner
-            android:id="@+id/sp_height"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/et_weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="Weight" />
-        <Spinner
-            android:id="@+id/sp_sex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:padding="20dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personal Info"/>
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+            <EditText
+                android:id="@+id/et_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Age" />
+            <EditText
+                android:id="@+id/et_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="City" />
+            <EditText
+                android:id="@+id/et_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Country" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:padding="20dp"
-        >
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Profile Picture"/>
-        <ImageView
-            android:id="@+id/img_profile_picture_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:padding="20dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Health Info"/>
+            <Spinner
+                android:id="@+id/sp_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/et_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Weight" />
+            <Spinner
+                android:id="@+id/sp_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:padding="20dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile Picture"/>
+            <ImageView
+                android:id="@+id/img_profile_picture_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -19,6 +19,29 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         findViewById<Button>(R.id.btn_profile_edit).setOnClickListener(this)
 
+
+        // TODO fix image stuff
+//        val img_file = File(filesDir,"profilePicture.png")
+//        if (!img_file.exists()) {
+//            Thread(Runnable {
+//                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
+//                val source = ImageDecoder.createSource(img_default_file)
+//                val drawable = ImageDecoder.decodeDrawable(source)
+//                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
+//            }).start()
+//        }
+//        else {
+//            Thread(Runnable {
+//                val source = ImageDecoder.createSource(img_file)
+//                val drawable = ImageDecoder.decodeDrawable(source)
+//                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
+//            }).start()
+//        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         //TODO check if file exists
         val file = File(filesDir,"userData.txt")
 
@@ -36,23 +59,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             findViewById<TextView>(R.id.tv_weight).text = userFromJSON.weight.toString()
             findViewById<TextView>(R.id.tv_sex).text = userFromJSON.sex
         }
-
-//        val img_file = File(filesDir,"profilePicture.png")
-//        if (!img_file.exists()) {
-//            Thread(Runnable {
-//                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
-//                val source = ImageDecoder.createSource(img_default_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
-//            }).start()
-//        }
-//        else {
-//            Thread(Runnable {
-//                val source = ImageDecoder.createSource(img_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
-//            }).start()
-//        }
     }
 
     override fun onClick(v: View?) {
