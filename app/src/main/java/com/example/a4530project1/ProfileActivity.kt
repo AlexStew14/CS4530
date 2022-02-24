@@ -2,6 +2,7 @@ package com.example.a4530project1
 
 import android.content.Intent
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -18,6 +19,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_profile)
 
         findViewById<Button>(R.id.btn_profile_edit).setOnClickListener(this)
+
 
 
         // TODO fix image stuff
@@ -58,6 +60,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             findViewById<TextView>(R.id.tv_height).text = userFromJSON.height
             findViewById<TextView>(R.id.tv_weight).text = userFromJSON.weight.toString()
             findViewById<TextView>(R.id.tv_sex).text = userFromJSON.sex
+            findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(userFromJSON.profilePicture))
         }
     }
 

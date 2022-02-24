@@ -1,5 +1,6 @@
 package com.example.a4530project1
 
+import android.Manifest
 import android.app.Activity
 import android.graphics.ImageDecoder
 import android.os.Bundle
@@ -9,6 +10,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
+import android.provider.MediaStore
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 data class User (
@@ -18,15 +30,25 @@ data class User (
     val country: String,
     val height: String,
     val weight: Int,
-    val sex: String
+    val sex: String,
+    val profilePicture: String
 )
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Uri? = result.data?.data
+                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(data)
+                findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(data.toString())
+            }
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
         findViewById<Button>(R.id.btn_edit_profile_submit).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_profile_picture_select).setOnClickListener(this)
 
         // get file contents
         // TODO check if file exists
@@ -35,11 +57,13 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         val mapper = jacksonObjectMapper()
         val userFromJSON: User = mapper.readValue(userJSON)
 
+
         findViewById<EditText>(R.id.et_name).setText(userFromJSON.name)
         findViewById<EditText>(R.id.et_age).setText(userFromJSON.age.toString())
         findViewById<EditText>(R.id.et_city).setText(userFromJSON.city)
         findViewById<EditText>(R.id.et_country).setText(userFromJSON.country)
         findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
+        findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(Uri.parse(userFromJSON.profilePicture))
 
         val height_spinner: Spinner = findViewById(R.id.sp_height)
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -108,7 +132,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                     val height = findViewById<Spinner>(R.id.sp_height).selectedItem.toString()
                     val weight = findViewById<EditText>(R.id.et_weight).text.toString().toInt()
                     val sex = findViewById<Spinner>(R.id.sp_sex).selectedItem.toString()
-                    val user = User(name, age, city, country, height, weight, sex)
+                    val profilePicture = findViewById<ImageView>(R.id.img_profile_picture_edit).getTag().toString()
+                    val user = User(name, age, city, country, height, weight, sex, profilePicture)
 
                     val mapper = jacksonObjectMapper()
                     val userJson = mapper.writeValueAsString(user)
@@ -118,6 +143,32 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                     }
                     finish()
                 }
+            }
+            R.id.btn_profile_picture_select -> {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 2)
+                }
+                else{
+                    SetProfileImage()
+                }
+            }
+        }
+    }
+
+    private fun SetProfileImage(){
+        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        resultLauncher.launch(gallery)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 2){
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                SetProfileImage()
             }
         }
     }
