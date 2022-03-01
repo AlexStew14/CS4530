@@ -64,6 +64,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<EditText>(R.id.et_country).setText(userFromJSON.country)
         findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
         findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(Uri.parse(userFromJSON.profilePicture))
+        findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(userFromJSON.profilePicture)
 
         val height_spinner: Spinner = findViewById(R.id.sp_height)
         // Create an ArrayAdapter using the string array and a default spinner layout
