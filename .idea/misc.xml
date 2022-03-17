@@ -4,12 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/font/quicksand.xml" value="0.396875" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_bmiactivity.xml" value="0.12892119357306808" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_edit_fitness_goals.xml" value="0.2571271929824561" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_edit_profile.xml" value="0.253125" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_fitness_goals.xml" value="0.25" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_hike.xml" value="0.11270491803278689" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_main.xml" value="0.19" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_profile.xml" value="0.21" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_sign_in.xml" value="0.22" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout-xlarge/activity_weather.xml" value="0.1" />
         <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_edit_fitness_goals.xml" value="0.27445652173913043" />
-        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_edit_profile.xml" value="0.3007246376811594" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />
         <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_fitness_goals.xml" value="0.25" />
-        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_hike.xml" value="0.3375" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_profile.xml" value="0.25" />
+        <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="..\:/U of U/senior/spring 2022/mobile apps/CS4530/app/src/main/res/layout/activity_weather.xml" value="0.25" />
         <entry key="..\:/Users/alex/AndroidStudioProjects/4530Project1/app/src/main/res/layout/activity_main.xml" value="0.3999094202898551" />
         <entry key="..\:/Users/alex/Documents/GitHub/CS4530/app/src/main/res/layout/activity_bmiactivity.xml" value="0.5541666666666667" />
@@ -19,7 +29,6 @@
         <entry key="..\:/Users/alex/Documents/GitHub/CS4530/app/src/main/res/layout/activity_hike.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/alex/Documents/GitHub/CS4530/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/alex/Documents/GitHub/CS4530/app/src/main/res/layout/activity_profile.xml" value="0.5541666666666667" />
-        <entry key="..\:/Users/alex/Documents/GitHub/CS4530/app/src/main/res/layout/activity_sign_in.xml" value="0.35643115942028986" />
         <entry key="..\:/Users/alex/Documents/GitHub/CS4530/app/src/main/res/layout/activity_weather.xml" value="0.5541666666666667" />
       </map>
     </option>

@@ -5,27 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_profile"
-    tools:context=".ProfileActivity">
-
-
+    tools:context=".SignInActivity">
 
     <TextView
-        android:id="@+id/profile_title"
+        android:id="@+id/signin_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Profile"
+        android:text="Welcome to Life+"
         android:fontFamily="@font/quicksand_regular"
-        android:textSize="40dp"
+        android:textSize="80dp"
         android:layout_marginTop="15dp"
         />
 
     <LinearLayout
-        android:id="@+id/profile_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/profile_title">
+        android:layout_below="@+id/signin_title">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,42 +32,48 @@
             android:layout_alignParentStart="true"
             android:padding="20dp"
             >
-            <TextView
-                android:id="@+id/tv_name"
+            <EditText
+                android:id="@+id/et_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name:" />
-            <TextView
-                android:id="@+id/tv_age"
+                android:hint="Name"
+                android:textSize="32dp"/>
+            <EditText
+                android:id="@+id/et_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Age:" />
-            <TextView
-                android:id="@+id/tv_city"
+                android:inputType="number"
+                android:hint="Age"
+                android:textSize="32dp"/>
+            <EditText
+                android:id="@+id/et_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="City:" />
-            <TextView
-                android:id="@+id/tv_country"
+                android:hint="City"
+                android:textSize="32dp"/>
+            <EditText
+                android:id="@+id/et_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Country:" />
-            <TextView
-                android:id="@+id/tv_height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Height:" />
-            <TextView
-                android:id="@+id/tv_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Weight:" />
-            <TextView
-                android:id="@+id/tv_sex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sex:" />
+                android:hint="Country"
+                android:textSize="32dp"/>
 
+            <Spinner
+                android:id="@+id/sp_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <EditText
+                android:id="@+id/et_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Weight"
+                android:textSize="30dp"/>
+            <Spinner
+                android:id="@+id/sp_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
@@ -88,36 +91,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:gravity="center"
             android:padding="20dp"
             >
+
             <androidx.cardview.widget.CardView
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                app:cardCornerRadius="64dp">
+                android:layout_width="256dp"
+                android:layout_height="256dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="128dp">
                 <ImageView
-                    android:id="@+id/img_profile_picture"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
+                    android:id="@+id/img_profile_picture_sign_in"
+                    android:layout_width="256dp"
+                    android:layout_height="256dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/default_profile_picture"/>
             </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/btn_profile_picture_select_sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Image"
+                android:textSize="24sp"/>
+
+
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_profile_edit"
+        android:id="@+id/btn_sign_in_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profile_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="edit" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="30dp"
+        android:text="Submit"
+        android:textSize="32dp"/>
+
 
 </RelativeLayout>

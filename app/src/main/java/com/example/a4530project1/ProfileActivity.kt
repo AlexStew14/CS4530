@@ -1,6 +1,7 @@
 package com.example.a4530project1
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
@@ -18,27 +19,13 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        if ((resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            findViewById<Button>(R.id.btn_weather).setOnClickListener(this)
+            findViewById<Button>(R.id.btn_hikes).setOnClickListener(this)
+            findViewById<Button>(R.id.btn_fitness_goals).setOnClickListener(this)
+        }
+
         findViewById<Button>(R.id.btn_profile_edit).setOnClickListener(this)
-
-
-
-        // TODO fix image stuff
-//        val img_file = File(filesDir,"profilePicture.png")
-//        if (!img_file.exists()) {
-//            Thread(Runnable {
-//                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
-//                val source = ImageDecoder.createSource(img_default_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
-//            }).start()
-//        }
-//        else {
-//            Thread(Runnable {
-//                val source = ImageDecoder.createSource(img_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture).setImageDrawable(drawable)
-//            }).start()
-//        }
     }
 
     override fun onResume() {
@@ -53,14 +40,16 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             val mapper = jacksonObjectMapper()
             val userFromJSON: User = mapper.readValue(userJSON)
 
-            findViewById<TextView>(R.id.tv_name).text = userFromJSON.name
-            findViewById<TextView>(R.id.tv_age).text = userFromJSON.age.toString()
-            findViewById<TextView>(R.id.tv_city).text = userFromJSON.city
-            findViewById<TextView>(R.id.tv_country).text = userFromJSON.country
-            findViewById<TextView>(R.id.tv_height).text = userFromJSON.height
-            findViewById<TextView>(R.id.tv_weight).text = userFromJSON.weight.toString()
-            findViewById<TextView>(R.id.tv_sex).text = userFromJSON.sex
-            findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(userFromJSON.profilePicture))
+            findViewById<TextView>(R.id.tv_name).text = "Name: " + userFromJSON.name
+            findViewById<TextView>(R.id.tv_age).text = "Age: " + userFromJSON.age.toString()
+            findViewById<TextView>(R.id.tv_city).text = "City: " + userFromJSON.city
+            findViewById<TextView>(R.id.tv_country).text = "Country: " + userFromJSON.country
+            findViewById<TextView>(R.id.tv_height).text = "Height: " + userFromJSON.height
+            findViewById<TextView>(R.id.tv_weight).text = "Weight: " + userFromJSON.weight.toString()
+            findViewById<TextView>(R.id.tv_sex).text = "Sex: " + userFromJSON.sex
+            if (userFromJSON.profilePicture.isNotEmpty()) {
+                findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(userFromJSON.profilePicture))
+            }
         }
     }
 
@@ -68,6 +57,20 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.btn_profile_edit -> {
                 val intent = Intent(this@ProfileActivity, EditProfileActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btn_weather -> {
+                val intent = Intent(this@ProfileActivity, WeatherActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btn_hikes -> {
+                val gmmIntentURI = Uri.parse("geo:0,0?q=hikes")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentURI)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+            R.id.btn_fitness_goals -> {
+                val intent = Intent(this@ProfileActivity, FitnessGoalsActivity::class.java)
                 startActivity(intent)
             }
         }

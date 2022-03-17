@@ -25,11 +25,11 @@ import kotlinx.coroutines.withContext
 
 data class User (
     val name: String,
-    val age: Int,
+    val age: String,
     val city: String,
     val country: String,
     val height: String,
-    val weight: Int,
+    val weight: String,
     val sex: String,
     val profilePicture: String
 )
@@ -63,8 +63,11 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<EditText>(R.id.et_city).setText(userFromJSON.city)
         findViewById<EditText>(R.id.et_country).setText(userFromJSON.country)
         findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
-        findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(Uri.parse(userFromJSON.profilePicture))
-        findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(userFromJSON.profilePicture)
+        if (userFromJSON.profilePicture.isNotEmpty()) {
+            findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(Uri.parse(userFromJSON.profilePicture))
+            findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(userFromJSON.profilePicture)
+        }
+
 
         val height_spinner: Spinner = findViewById(R.id.sp_height)
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -93,25 +96,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             sex_spinner.adapter = adapter
             sex_spinner.setSelection(adapter.getPosition(userFromJSON.sex))
         }
-
-//        val img_file = File(filesDir,"profilePicture.png")
-//        if (!img_file.exists()) {
-//            Thread(Runnable {
-//                val img_default_file = File(filesDir,"DefaultProfilePicture.png")
-//                val source = ImageDecoder.createSource(img_default_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageDrawable(drawable)
-//            }).start()
-//        }
-//        else {
-//            Thread(Runnable {
-//                val source = ImageDecoder.createSource(img_file)
-//                val drawable = ImageDecoder.decodeDrawable(source)
-//                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageDrawable(drawable)
-//            }).start()
-//        }
-
-
     }
 
     override fun onClick(v: View?) {
@@ -127,13 +111,16 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                 }
                 else {
                     val name = findViewById<EditText>(R.id.et_name).text.toString()
-                    val age = findViewById<EditText>(R.id.et_age).text.toString().toInt()
+                    val age = findViewById<EditText>(R.id.et_age).text.toString()
                     val city = findViewById<EditText>(R.id.et_city).text.toString()
                     val country = findViewById<EditText>(R.id.et_country).text.toString()
                     val height = findViewById<Spinner>(R.id.sp_height).selectedItem.toString()
-                    val weight = findViewById<EditText>(R.id.et_weight).text.toString().toInt()
+                    val weight = findViewById<EditText>(R.id.et_weight).text.toString()
                     val sex = findViewById<Spinner>(R.id.sp_sex).selectedItem.toString()
-                    val profilePicture = findViewById<ImageView>(R.id.img_profile_picture_edit).getTag().toString()
+                    var profilePicture = ""
+                    if (findViewById<ImageView>(R.id.img_profile_picture_edit).getTag() != null) {
+                        profilePicture = findViewById<ImageView>(R.id.img_profile_picture_edit).getTag().toString()
+                    }
                     val user = User(name, age, city, country, height, weight, sex, profilePicture)
 
                     val mapper = jacksonObjectMapper()

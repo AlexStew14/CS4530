@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_fitness"
-    tools:context=".FitnessGoalsActivity">
+    tools:context=".EditFitnessGoalsActivity">
 
 
     <TextView
-        android:id="@+id/fitness_title"
+        android:id="@+id/edit_fitness_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Fitness Goals"
+        android:text="Edit Fitness Goals"
         android:fontFamily="@font/quicksand_regular"
-        android:textSize="40dp"
+        android:textSize="80dp"
         android:layout_marginTop="15dp"
         />
 
@@ -23,48 +23,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/fitness_title"
+        android:layout_below="@id/edit_fitness_title"
         android:layout_centerHorizontal="true"
         android:padding="20dp"
         >
         <TextView
-            android:id="@+id/tv_bmi"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_weight_goal"
+            android:layout_height="wrap_content"
+            android:text="Weight Goal"
+            android:textSize="32dp"/>
+        <Spinner
+            android:id="@+id/sp_weight_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <TextView
-            android:id="@+id/tv_activity_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Level"
+            android:textSize="32dp"/>
+        <Spinner
+            android:id="@+id/sp_activity_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <TextView
-            android:id="@+id/tv_pounds_per_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pounds Per Week"
+            android:textSize="32dp"/>
+        <Spinner
+            android:id="@+id/sp_pounds_per_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
-        <TextView
-            android:id="@+id/tv_calories_needed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:id="@+id/tv_calorie_warning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            />
-
-        <Button
-            android:id="@+id/btn_fitness_goals_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="edit"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_edit_fitness_goals_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="30dp"
+        android:text="Submit"
+        android:textSize="32dp"/>
+
 
 </RelativeLayout>

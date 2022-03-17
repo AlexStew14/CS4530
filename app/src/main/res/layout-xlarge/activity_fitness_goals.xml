@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:text="Fitness Goals"
         android:fontFamily="@font/quicksand_regular"
-        android:textSize="40dp"
+        android:textSize="80dp"
         android:layout_marginTop="15dp"
         />
 
@@ -30,32 +30,38 @@
         <TextView
             android:id="@+id/tv_bmi"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="32dp"/>
         <TextView
             android:id="@+id/tv_weight_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="32dp"
             />
         <TextView
             android:id="@+id/tv_activity_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="32dp"
             />
         <TextView
             android:id="@+id/tv_pounds_per_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="32dp"
             />
         <TextView
             android:id="@+id/tv_calories_needed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="32dp"
             />
         <TextView
             android:id="@+id/tv_calorie_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
+            android:textSize="32dp"
             />
 
         <Button
@@ -63,7 +69,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textSize="32dp"
             android:text="edit"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        >
+
+        <Button
+            android:id="@+id/btn_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:textSize="24dp"
+            android:text="Profile" />
+
+
+        <Button
+            android:id="@+id/btn_hikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hikes"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:textSize="24dp"
+            />
+        <Button
+            android:id="@+id/btn_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weather"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:textSize="24dp"
+            />
 
     </LinearLayout>
 

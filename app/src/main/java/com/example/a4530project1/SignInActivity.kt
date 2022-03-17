@@ -76,13 +76,19 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 else {
                     val name = findViewById<EditText>(R.id.et_name).text.toString()
-                    val age = findViewById<EditText>(R.id.et_age).text.toString().toInt()
+                    val age = findViewById<EditText>(R.id.et_age).text.toString()
                     val city = findViewById<EditText>(R.id.et_city).text.toString()
                     val country = findViewById<EditText>(R.id.et_country).text.toString()
                     val height = findViewById<Spinner>(R.id.sp_height).selectedItem.toString()
-                    val weight = findViewById<EditText>(R.id.et_weight).text.toString().toInt()
+                    val weight = findViewById<EditText>(R.id.et_weight).text.toString()
                     val sex = findViewById<Spinner>(R.id.sp_sex).selectedItem.toString()
-                    val profilePicture = findViewById<ImageView>(R.id.img_profile_picture_sign_in).getTag().toString()
+                    var profilePicture = findViewById<ImageView>(R.id.img_profile_picture_sign_in).getTag()
+                    if (profilePicture == null) {
+                       profilePicture = ""
+                    }
+                    else {
+                        profilePicture = profilePicture.toString()
+                    }
                     val user = User(name, age, city, country, height, weight, sex, profilePicture)
 
                     val mapper = jacksonObjectMapper()
@@ -121,5 +127,9 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
                 SetProfileImage()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 }
