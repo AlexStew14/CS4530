@@ -23,16 +23,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-data class User (
-    val name: String,
-    val age: String,
-    val city: String,
-    val country: String,
-    val height: String,
-    val weight: String,
-    val sex: String,
-    val profilePicture: String
-)
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     private val resultLauncher =
@@ -51,7 +41,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<Button>(R.id.btn_profile_picture_select).setOnClickListener(this)
 
         // get file contents
-        // TODO check if file exists
         val userJSON = File(filesDir,"userData.txt").readText(Charsets.UTF_8)
 
         val mapper = jacksonObjectMapper()

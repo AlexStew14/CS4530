@@ -1,6 +1,5 @@
 package com.example.a4530project1
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,12 +7,6 @@ import android.widget.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
-
-data class fitnessGoal (
-    val weightGoal: String,
-    val activityLevel: String,
-    val poundsPerWeek: Float
-)
 
 class EditFitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +22,7 @@ class EditFitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
             val fitnessGoalJSON = File(filesDir,"fitnessGoalData.txt").readText(Charsets.UTF_8)
 
             val mapper = jacksonObjectMapper()
-            val fitnessGoalFromJSON: fitnessGoal = mapper.readValue(fitnessGoalJSON)
+            val fitnessGoalFromJSON: FitnessGoal = mapper.readValue(fitnessGoalJSON)
 
             val wg_spinner: Spinner = findViewById(R.id.sp_weight_goal)
             ArrayAdapter.createFromResource(this,R.array.weight_goal_array,android.R.layout.simple_spinner_item
@@ -84,7 +77,7 @@ class EditFitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 val weightGoal = findViewById<Spinner>(R.id.sp_weight_goal).selectedItem.toString()
                 val activityLevel = findViewById<Spinner>(R.id.sp_activity_level).selectedItem.toString()
                 val poundsPerWeek = findViewById<Spinner>(R.id.sp_pounds_per_week).selectedItem.toString().toFloat()
-                val fitnessGoal = fitnessGoal(weightGoal, activityLevel, poundsPerWeek)
+                val fitnessGoal = FitnessGoal(weightGoal, activityLevel, poundsPerWeek)
 
                 val mapper = jacksonObjectMapper()
                 val fitnessGoalsJSON = mapper.writeValueAsString(fitnessGoal)

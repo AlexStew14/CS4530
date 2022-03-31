@@ -5,14 +5,12 @@ import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.service.autofill.Validators.not
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import kotlinx.coroutines.flow.callbackFlow
 import java.io.File
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -78,7 +76,7 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 val fitnessGoalJSON = fg_file.readText(Charsets.UTF_8)
 
                 val mapper = jacksonObjectMapper()
-                val fg: fitnessGoal = mapper.readValue(fitnessGoalJSON)
+                val fg: FitnessGoal = mapper.readValue(fitnessGoalJSON)
 
                 findViewById<TextView>(R.id.tv_weight_goal).text = "Weight Goal: " + fg.weightGoal
                 findViewById<TextView>(R.id.tv_activity_level).text = "Activity Level: " + fg.activityLevel
