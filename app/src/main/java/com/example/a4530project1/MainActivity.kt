@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import androidx.lifecycle.ViewModelProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener{
+
+    private lateinit var viewModel : DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,21 +26,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<Button>(R.id.btn_fitness_goals).setOnClickListener(this)
         findViewById<Button>(R.id.btn_profile).setOnClickListener(this)
 
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
-        val file = File(filesDir,"userData.txt")
+        val personalData: User? = viewModel.getPersonalData()
 
-        if (!file.exists()) {
+        if (personalData == null) {
             val intent = Intent(this@MainActivity, SignInActivity::class.java)
             startActivity(intent)
         }
         else {
-            val userJSON = file.readText(Charsets.UTF_8)
-
-            val mapper = jacksonObjectMapper()
-            val userFromJSON: User = mapper.readValue(userJSON)
-
-            if (userFromJSON.profilePicture.isNotEmpty()) {
-                findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(userFromJSON.profilePicture))
+            if (personalData.profilePicture.isNotEmpty()) {
+                findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(personalData.profilePicture))
             }
         }
     }
@@ -45,16 +44,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
     override fun onResume() {
         super.onResume()
 
-        val file = File(filesDir,"userData.txt")
+        val personalData: User? = viewModel.getPersonalData()
 
-        if (file.exists()) {
-            val userJSON = file.readText(Charsets.UTF_8)
-
-            val mapper = jacksonObjectMapper()
-            val userFromJSON: User = mapper.readValue(userJSON)
-
-            if (userFromJSON.profilePicture.isNotEmpty()) {
-                findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(userFromJSON.profilePicture))
+        if (personalData != null) {
+            if (personalData.profilePicture.isNotEmpty()) {
+                findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(personalData.profilePicture))
             }
         }
     }

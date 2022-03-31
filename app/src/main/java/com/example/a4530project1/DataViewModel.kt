@@ -1,49 +1,63 @@
 package com.example.a4530project1
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
+import android.location.LocationManager
+import android.widget.TextView
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 import java.io.File
 
 
 
-class DataViewModel(val context: Context) : ViewModel() {
+class DataViewModel(application: Application) : AndroidViewModel(application) {
+
+    @SuppressLint("StaticFieldLeak")
+    private val context = getApplication<Application>().applicationContext
 
     private var user: UserRepository = UserRepository(context)
-    private var weather: WeatherRepository = WeatherRepository()
 
-    fun getPersonalData() : User {
-        return user.getUserData()
+    fun getPersonalData() : User? {
+        var res : User? = null
+        runBlocking {
+            res = user.getUserData()
+        }
+        return res
     }
 
     fun updatePersonalData(data: User) {
-        viewModelScope.launch {
+        runBlocking {
             user.updateUserData(data)
         }
     }
 
-    fun loadPersonalData() {
-        viewModelScope.launch {
-            user.loadUserData()
+    fun getFitnessGoalData() : FitnessGoal? {
+        var res : FitnessGoal? = null
+        runBlocking {
+            res = user.getFitnessData()
         }
-    }
-
-    fun getFitnessGoalData() : FitnessGoal {
-        return user.getFitnessData()
+        return res
     }
 
     fun updateFitnessGoalData(data: FitnessGoal) {
-        viewModelScope.launch {
+        runBlocking {
             user.updateFitnessData(data)
         }
     }
 
-    fun loadFitnessGoalData() {
-        viewModelScope.launch {
-            user.loadFitnessData()
+    fun getWeatherData(locMag : LocationManager, cityTV : TextView, tempTV : TextView, statusTV : TextView) {
+        runBlocking {
+            user.getWeatherData(locMag, cityTV, tempTV, statusTV)
         }
     }
+
 }

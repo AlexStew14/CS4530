@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
@@ -28,12 +29,16 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+    private lateinit var viewModel : DataViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
         findViewById<Button>(R.id.btn_sign_in_submit).setOnClickListener(this)
         findViewById<Button>(R.id.btn_profile_picture_select_sign_in).setOnClickListener(this)
+
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         val height_spinner: Spinner = findViewById(R.id.sp_height)
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -91,12 +96,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
                     }
                     val user = User(name, age, city, country, height, weight, sex, profilePicture)
 
-                    val mapper = jacksonObjectMapper()
-                    val userJson = mapper.writeValueAsString(user)
-
-                    File(filesDir,"userData.txt").printWriter().use { out ->
-                        out.println(userJson)
-                    }
+                    viewModel.updatePersonalData(user)
                     finish()
                 }
             }

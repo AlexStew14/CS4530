@@ -1,5 +1,6 @@
 package com.example.a4530project1
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
@@ -16,6 +18,9 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 
 class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
+
+    private lateinit var viewModel : DataViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fitness_goals)
@@ -28,80 +33,74 @@ class FitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
         findViewById<Button>(R.id.btn_fitness_goals_edit).setOnClickListener(this)
 
-        // TODO check if this is users first time opening fitness module,
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+        // check if this is users first time opening fitness module,
         // if so prompt for initial data else display everything
 
-        val userJSON = File(filesDir, "userData.txt").readText(Charsets.UTF_8)
-        val mapper = jacksonObjectMapper()
-        val user: User = mapper.readValue(userJSON)
+        val personalData: User? = viewModel.getPersonalData()
+        val fitnessData: FitnessGoal? = viewModel.getFitnessGoalData()
 
-        var weight = user.weight.toIntOrNull()
-        var age = user.age.toIntOrNull()
-        if (weight == null || age == null) {
-            val text = "Must enter weight & age in profile to use feature"
-            val duration = Toast.LENGTH_SHORT
+        if (personalData != null) {
+            var weight = personalData.weight.toIntOrNull()
+            var age = personalData.age.toIntOrNull()
+            if (weight == null || age == null) {
+                val text = "Must enter weight & age in profile to use feature"
+                val duration = Toast.LENGTH_SHORT
 
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
+                val toast = Toast.makeText(applicationContext, text, duration)
+                toast.show()
 
-            finish()
-        }
-        else if (!File(filesDir,"fitnessGoalData.txt").exists()) {
-            val intent = Intent(this@FitnessGoalsActivity, EditFitnessGoalsActivity::class.java)
-            startActivity(intent)
+                finish()
+            } else if (fitnessData == null) { // first time user has opened this activity
+                val intent = Intent(this@FitnessGoalsActivity, EditFitnessGoalsActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
         // get file contents
-        val user_file = File(filesDir, "userData.txt")
-        if (user_file.exists()) {
-            val userJSON = File(filesDir, "userData.txt").readText(Charsets.UTF_8)
+        val personalData: User? = viewModel.getPersonalData()
+        if (personalData != null) {
 
-            val mapper = jacksonObjectMapper()
-            val user: User = mapper.readValue(userJSON)
+            val weight = personalData.weight.toInt()
+            val age = personalData.age.toInt()
 
-            val weight = user.weight.toInt()
-            val age = user.age.toInt()
-
-            val heightInInches = (user.height[0].toString()
-                .toDouble() * 12) + (user.height[2].toString().toDouble())
+            val heightInInches = (personalData.height[0].toString().toDouble() * 12) + (personalData.height[2].toString().toDouble())
             findViewById<TextView>(R.id.tv_bmi).text = "BMI: " + ((weight / heightInInches.pow(2.0)) * 703).roundToInt().toString()
 
-            val fg_file = File(filesDir,"fitnessGoalData.txt")
+            val fitnessData: FitnessGoal? = viewModel.getFitnessGoalData()
 
-            if (fg_file.exists()) {
-                val fitnessGoalJSON = fg_file.readText(Charsets.UTF_8)
+            if (fitnessData != null) {
 
-                val mapper = jacksonObjectMapper()
-                val fg: FitnessGoal = mapper.readValue(fitnessGoalJSON)
+                findViewById<TextView>(R.id.tv_weight_goal).text = "Weight Goal: " + fitnessData.weightGoal
+                findViewById<TextView>(R.id.tv_activity_level).text = "Activity Level: " + fitnessData.activityLevel
+                findViewById<TextView>(R.id.tv_pounds_per_week).text = "Pounds Per Week: " + fitnessData.poundsPerWeek.toString()
 
-                findViewById<TextView>(R.id.tv_weight_goal).text = "Weight Goal: " + fg.weightGoal
-                findViewById<TextView>(R.id.tv_activity_level).text = "Activity Level: " + fg.activityLevel
-                findViewById<TextView>(R.id.tv_pounds_per_week).text = "Pounds Per Week: " + fg.poundsPerWeek.toString()
-
-                var bmr = if (user.sex == "Male") {
+                var bmr = if (personalData.sex == "Male") {
                     66.47 + (6.24 * weight) + (12.7 * heightInInches) - (6.755 * age)
                 } else {
                     655.1 + (4.35 * weight) + (4.7 * heightInInches) - (4.7 * age)
                 }
 
                 var calGoal = bmr
-                if(fg.activityLevel == "Sedentary")
+                if(fitnessData.activityLevel == "Sedentary")
                     calGoal *= 1.2
                 else
                     calGoal *= 1.6
 
-                if (fg.weightGoal == "Lose Weight") {
-                    calGoal -= 500 * fg.poundsPerWeek
+                if (fitnessData.weightGoal == "Lose Weight") {
+                    calGoal -= 500 * fitnessData.poundsPerWeek
                 }
-                else if (fg.weightGoal == "Gain Weight") {
-                    calGoal += 500 * fg.poundsPerWeek
+                else if (fitnessData.weightGoal == "Gain Weight") {
+                    calGoal += 500 * fitnessData.poundsPerWeek
                 }
 
-                if (user.sex == "Male" && calGoal < 1200 ) {
+                if (personalData.sex == "Male" && calGoal < 1200 ) {
                     findViewById<TextView>(R.id.tv_calories_needed).text = "Calorie Goal: " + calGoal.roundToInt().toString()
                     findViewById<TextView>(R.id.tv_calorie_warning).text = "WARNING: Too few calories"
                 }

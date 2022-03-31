@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,14 +32,14 @@ import java.util.function.Consumer
 import kotlin.math.roundToInt
 
 class WeatherActivity : AppCompatActivity(), View.OnClickListener {
-    private val apiKey: String = "86645aa7651e68753af7d48496c69f36"
-
-    private lateinit var locationManager: LocationManager
-    private lateinit var  geocoder: Geocoder
 
     private lateinit var cityTV: TextView
     private lateinit var tempTV: TextView
     private lateinit var statusTV: TextView
+
+    private lateinit var locationManager: LocationManager
+
+    private lateinit var viewModel : DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,7 @@ class WeatherActivity : AppCompatActivity(), View.OnClickListener {
         tempTV = findViewById(R.id.tv_temperature)
         statusTV = findViewById(R.id.tv_weather_status)
 
-        geocoder = Geocoder(this, Locale.getDefault())
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         if ((resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             findViewById<Button>(R.id.btn_hikes).setOnClickListener(this)
@@ -76,56 +77,25 @@ class WeatherActivity : AppCompatActivity(), View.OnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 2)
         }
         else{
-            getCurrentLocation()
+            getWeather()
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getCurrentLocation(){
-        val locationCallback = Consumer<Location> {location ->
-            if (location != null){
-                val addresses: List<Address?> = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                if (addresses.isNotEmpty() && addresses[0] != null){
-                    cityTV.text = "City: " + addresses[0]!!.locality
-                    getWeather(addresses[0]!!.latitude, addresses[0]!!.longitude)
-                }
-            }
-        }
-        locationManager.getCurrentLocation(LocationManager.GPS_PROVIDER, null, this.mainExecutor, locationCallback)
-    }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 2){
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getCurrentLocation()
+        if (requestCode == 2) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getWeather()
             }
         }
     }
 
-    private fun getWeather(latitude: Double, longitude: Double){
-        GlobalScope.launch( Dispatchers.IO ) {
-            val connection = URL("https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=imperial").openConnection() as HttpURLConnection
-            val data: String = connection.inputStream.bufferedReader().readText()
-            withContext(Dispatchers.Main){
-                val obj = JSONObject(data)
-                val main = obj.getJSONObject("main")
-                val temp = main.getDouble("temp")
-                val weather = obj.getJSONArray("weather").getJSONObject(0)
-                val status = weather.getString("description")
-                tempTV.text = "Temp: " + temp.roundToInt() + "\u2109"
-                statusTV.text = "Weather Status: " + status
-            }
-        }
+    @SuppressLint("SetTextI18n")
+    private fun getWeather() {
+        viewModel.getWeatherData(locationManager, cityTV, tempTV, statusTV)
     }
 
     override fun onClick(v: View?) {
-
         when (v?.id){
             R.id.btn_hikes -> {
                 val gmmIntentURI = Uri.parse("geo:0,0?q=hikes")

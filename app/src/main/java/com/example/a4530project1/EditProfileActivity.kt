@@ -2,13 +2,11 @@ package com.example.a4530project1
 
 import android.Manifest
 import android.app.Activity
-import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
 import android.provider.MediaStore
 import android.content.Intent
@@ -17,11 +15,8 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.runBlocking
 
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
@@ -33,57 +28,63 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                 findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(data.toString())
             }
         }
+
+    private lateinit var viewModel : DataViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
-
         findViewById<Button>(R.id.btn_edit_profile_submit).setOnClickListener(this)
         findViewById<Button>(R.id.btn_profile_picture_select).setOnClickListener(this)
 
-        // get file contents
-        val userJSON = File(filesDir,"userData.txt").readText(Charsets.UTF_8)
 
-        val mapper = jacksonObjectMapper()
-        val userFromJSON: User = mapper.readValue(userJSON)
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+        val personalData: User? = viewModel.getPersonalData()
+
+        if (personalData != null) {
+            findViewById<EditText>(R.id.et_name).setText(personalData.name)
+            findViewById<EditText>(R.id.et_age).setText(personalData.age.toString())
+            findViewById<EditText>(R.id.et_city).setText(personalData.city)
+            findViewById<EditText>(R.id.et_country).setText(personalData.country)
+            findViewById<EditText>(R.id.et_weight).setText(personalData.weight.toString())
+            if (personalData.profilePicture.isNotEmpty()) {
+                findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(
+                    Uri.parse(
+                        personalData.profilePicture
+                    )
+                )
+                findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(personalData.profilePicture)
+            }
 
 
-        findViewById<EditText>(R.id.et_name).setText(userFromJSON.name)
-        findViewById<EditText>(R.id.et_age).setText(userFromJSON.age.toString())
-        findViewById<EditText>(R.id.et_city).setText(userFromJSON.city)
-        findViewById<EditText>(R.id.et_country).setText(userFromJSON.country)
-        findViewById<EditText>(R.id.et_weight).setText(userFromJSON.weight.toString())
-        if (userFromJSON.profilePicture.isNotEmpty()) {
-            findViewById<ImageView>(R.id.img_profile_picture_edit).setImageURI(Uri.parse(userFromJSON.profilePicture))
-            findViewById<ImageView>(R.id.img_profile_picture_edit).setTag(userFromJSON.profilePicture)
-        }
+            val height_spinner: Spinner = findViewById(R.id.sp_height)
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.heights_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                height_spinner.adapter = adapter
+                height_spinner.setSelection(adapter.getPosition(personalData.height))
+            }
 
-
-        val height_spinner: Spinner = findViewById(R.id.sp_height)
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.heights_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            height_spinner.adapter = adapter
-            height_spinner.setSelection(adapter.getPosition(userFromJSON.height))
-        }
-
-        val sex_spinner: Spinner = findViewById(R.id.sp_sex)
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.sex_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            sex_spinner.adapter = adapter
-            sex_spinner.setSelection(adapter.getPosition(userFromJSON.sex))
+            val sex_spinner: Spinner = findViewById(R.id.sp_sex)
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.sex_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                sex_spinner.adapter = adapter
+                sex_spinner.setSelection(adapter.getPosition(personalData.sex))
+            }
         }
     }
 
@@ -112,12 +113,14 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                     }
                     val user = User(name, age, city, country, height, weight, sex, profilePicture)
 
-                    val mapper = jacksonObjectMapper()
-                    val userJson = mapper.writeValueAsString(user)
+                    viewModel.updatePersonalData(user)
 
-                    File(filesDir,"userData.txt").printWriter().use { out ->
-                        out.println(userJson)
-                    }
+//                    val mapper = jacksonObjectMapper()
+//                    val userJson = mapper.writeValueAsString(user)
+//
+//                    File(filesDir,"userData.txt").printWriter().use { out ->
+//                        out.println(userJson)
+//                    }
                     finish()
                 }
             }
