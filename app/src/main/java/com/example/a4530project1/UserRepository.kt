@@ -3,51 +3,26 @@ package com.example.a4530project1
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import androidx.lifecycle.viewModelScope
+import android.widget.TextView
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import java.io.File
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.location.Geocoder
-import android.net.Uri
-import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import kotlinx.coroutines.*
 import org.json.JSONObject
+import java.io.File
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
+import java.nio.charset.Charset
 import java.util.*
-import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 import kotlin.math.roundToInt
 
-data class User (
-    val name: String,
-    val age: String,
-    val city: String,
-    val country: String,
-    val height: String,
-    val weight: String,
-    val sex: String,
-    val profilePicture: String
-)
-
-data class FitnessGoal  (
-    val weightGoal: String,
-    val activityLevel: String,
-    val poundsPerWeek: Float
-)
 
 class UserRepository(val context: Context) {
     private val apiKey: String = "86645aa7651e68753af7d48496c69f36"
@@ -58,12 +33,23 @@ class UserRepository(val context: Context) {
     private lateinit var tempTV: TextView
     private lateinit var statusTV: TextView
 
+    private lateinit var userDAO : UserDatabaseDAO
+
+    private val databaseExecutor: ExecutorService = Executors.newFixedThreadPool(4)
+
+    init {
+        var db = UserDatabase.Companion.getInstance(context)
+        userDAO = db.userDatabaseDAO
+    }
+
     suspend fun getUserData() : User? {
-        var file = File(context.filesDir,"userData.txt")
+        var file = File(context.filesDir,"userKey.txt")
         if (file.exists()) {
-            val userJSON = file.readText(Charsets.UTF_8)
-            val mapper = jacksonObjectMapper()
-            return mapper.readValue(userJSON)
+            var res : User? = null
+            runBlocking {
+                res = userDAO.getUser(file.readText(Charsets.UTF_8).toLong())
+            }
+            return res
         }
         else {
             return null
@@ -71,29 +57,48 @@ class UserRepository(val context: Context) {
     }
 
     suspend fun updateUserData(data: User) {
-        val mapper = jacksonObjectMapper()
-        val userJson = mapper.writeValueAsString(data)
-        File(context.filesDir,"userData.txt").printWriter().use { out -> out.println(userJson) }
+        runBlocking {
+            var key = File(context.filesDir,"userKey.txt").readText(Charsets.UTF_8).toLong()
+            userDAO.insert(User(key, data.name, data.age, data.city, data.country, data.height, data.weight, data.sex, data.profilePicture))
+        }
+    }
+
+    suspend fun insertUserData(data: User) {
+        runBlocking {
+            val key = userDAO.insert(data)
+            File(context.filesDir,"userKey.txt").printWriter().use { out -> out.print(key) }
+        }
     }
 
     suspend fun getFitnessData() : FitnessGoal? {
-        var file = File(context.filesDir,"fitnessGoalData.txt")
+        var file = File(context.filesDir,"fitnessKey.txt")
         if (file.exists()) {
-            val fitnessJSON = file.readText(Charsets.UTF_8)
-            val mapper = jacksonObjectMapper()
-            return mapper.readValue(fitnessJSON)
+            var res : FitnessGoal? = null
+            runBlocking {
+                res = userDAO.getFitness(file.readText(Charsets.UTF_8).toLong())
+            }
+            return res
         }
         else {
             return null
         }
     }
 
-    suspend fun updateFitnessData(data: FitnessGoal) {
-        val mapper = jacksonObjectMapper()
-        val userJson = mapper.writeValueAsString(data)
-        File(context.filesDir,"fitnessGoalData.txt").printWriter().use { out -> out.println(userJson) }
+    suspend fun insertFitnessData(data: FitnessGoal) {
+        runBlocking {
+            val key = userDAO.insert(data)
+            File(context.filesDir,"fitnessKey.txt").printWriter().use { out -> out.print(key) }
+        }
     }
 
+    suspend fun updateFitnessData(data: FitnessGoal) {
+        runBlocking {
+            var key = File(context.filesDir,"fitnessKey.txt").readText(Charsets.UTF_8).toLong()
+            userDAO.insert(FitnessGoal(key, data.weightGoal, data.activityLevel, data.poundsPerWeek))
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     suspend fun getWeatherData(locMag : LocationManager, cityTV : TextView, tempTV : TextView, statusTV : TextView){
         geocoder = Geocoder(context, Locale.getDefault())
         locationManager = locMag
@@ -101,7 +106,20 @@ class UserRepository(val context: Context) {
         this.tempTV = tempTV
         this.statusTV = statusTV
 
-        getCurrentLocation()
+        try {
+            getCurrentLocation()
+        }
+        catch (e: Exception) { // should run when we dont have internet access
+            runBlocking {
+                var key = File(context.filesDir,"weatherKey.txt").readText(Charsets.UTF_8).toLong()
+                var weatherData = userDAO.getWeather(key)
+                if (weatherData != null) {
+                    tempTV.text = "Temp: " + weatherData.temp + "\u2109"
+                    statusTV.text = "Weather Status: ${weatherData.status}"
+                    cityTV.text = "City: " + weatherData.city
+                }
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -133,6 +151,11 @@ class UserRepository(val context: Context) {
                 tempTV.text = "Temp: " + temp.roundToInt() + "\u2109"
                 statusTV.text = "Weather Status: $status"
                 cityTV.text = "City: " + obj.getString("name")
+                runBlocking { // cache weather
+                    var key = userDAO.insert(WeatherData(temp=temp.roundToInt(), status=status, city=obj.getString("name")))
+                    File(context.filesDir,"weatherKey.txt").printWriter().use { out -> out.print(key) }
+                    userDAO.insert(WeatherData(key, temp.roundToInt(), status, obj.getString("name")))
+                }
             }
         }
 

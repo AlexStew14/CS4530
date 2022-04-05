@@ -111,16 +111,10 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                     if (findViewById<ImageView>(R.id.img_profile_picture_edit).getTag() != null) {
                         profilePicture = findViewById<ImageView>(R.id.img_profile_picture_edit).getTag().toString()
                     }
-                    val user = User(name, age, city, country, height, weight, sex, profilePicture)
+                    val user = User(name=name, age=age, city=city, country=country, height=height, weight=weight, sex=sex, profilePicture=profilePicture)
 
                     viewModel.updatePersonalData(user)
-
-//                    val mapper = jacksonObjectMapper()
-//                    val userJson = mapper.writeValueAsString(user)
-//
-//                    File(filesDir,"userData.txt").printWriter().use { out ->
-//                        out.println(userJson)
-//                    }
+                    
                     finish()
                 }
             }

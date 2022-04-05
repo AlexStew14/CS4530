@@ -40,12 +40,24 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun insertPersonalData(data: User) {
+        runBlocking {
+            user.insertUserData(data)
+        }
+    }
+
     fun getFitnessGoalData() : FitnessGoal? {
         var res : FitnessGoal? = null
         runBlocking {
             res = user.getFitnessData()
         }
         return res
+    }
+
+    fun insertFitnessData(data: FitnessGoal) {
+        runBlocking {
+            user.insertFitnessData(data)
+        }
     }
 
     fun updateFitnessGoalData(data: FitnessGoal) {

@@ -94,9 +94,9 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
                     else {
                         profilePicture = profilePicture.toString()
                     }
-                    val user = User(name, age, city, country, height, weight, sex, profilePicture)
+                    val user = User(name=name, age=age, city=city, country=country, height=height, weight=weight, sex=sex, profilePicture=profilePicture)
 
-                    viewModel.updatePersonalData(user)
+                    viewModel.insertPersonalData(user)
                     finish()
                 }
             }

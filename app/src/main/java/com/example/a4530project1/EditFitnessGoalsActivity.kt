@@ -78,9 +78,14 @@ class EditFitnessGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 val weightGoal = findViewById<Spinner>(R.id.sp_weight_goal).selectedItem.toString()
                 val activityLevel = findViewById<Spinner>(R.id.sp_activity_level).selectedItem.toString()
                 val poundsPerWeek = findViewById<Spinner>(R.id.sp_pounds_per_week).selectedItem.toString().toFloat()
-                val fitnessGoal = FitnessGoal(weightGoal, activityLevel, poundsPerWeek)
-
-                viewModel.updateFitnessGoalData(fitnessGoal)
+                val fitnessGoal = FitnessGoal(weightGoal=weightGoal, activityLevel=activityLevel, poundsPerWeek=poundsPerWeek)
+                var file = File(this.filesDir,"fitnessKey.txt")
+                if (file.exists()) {
+                    viewModel.updateFitnessGoalData(fitnessGoal)
+                }
+                else {
+                    viewModel.insertFitnessData(fitnessGoal)
+                }
 
                 finish()
             }
