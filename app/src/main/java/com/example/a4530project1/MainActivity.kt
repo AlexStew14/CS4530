@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.coroutines.runBlocking
 import java.io.File
 
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         findViewById<Button>(R.id.btn_hikes).setOnClickListener(this)
         findViewById<Button>(R.id.btn_fitness_goals).setOnClickListener(this)
         findViewById<Button>(R.id.btn_profile).setOnClickListener(this)
+        findViewById<Button>(R.id.btn_step_counter).setOnClickListener(this)
 
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
@@ -37,6 +39,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         else {
             if (personalData.profilePicture.isNotEmpty()) {
                 findViewById<ImageView>(R.id.img_profile_picture).setImageURI(Uri.parse(personalData.profilePicture))
+            }
+        }
+
+        var file = File(filesDir,"tracking.txt")
+        if (!file.exists()) {
+            File(filesDir,"tracking.txt").printWriter().use { out ->
+                out.print(false)
             }
         }
     }
@@ -71,6 +80,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
             }
             R.id.btn_profile -> {
                 val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btn_step_counter -> {
+                val intent = Intent(this@MainActivity, StepCounterActivity::class.java)
                 startActivity(intent)
             }
         }
