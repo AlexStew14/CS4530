@@ -66,6 +66,26 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getStepData() : StepData? {
+        var res : StepData? = null
+        runBlocking {
+            res = user.getStepData()
+        }
+        return res
+    }
+
+    fun insertStepData(data: StepData) {
+        runBlocking {
+            user.insertStepData(data)
+        }
+    }
+
+    fun updateStepData(data: StepData) {
+        runBlocking {
+            user.updateStepData(data)
+        }
+    }
+
     fun getWeatherData(locMag : LocationManager, cityTV : TextView, tempTV : TextView, statusTV : TextView) {
         runBlocking {
             user.getWeatherData(locMag, cityTV, tempTV, statusTV)

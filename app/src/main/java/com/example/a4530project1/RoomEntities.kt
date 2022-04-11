@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.lang.reflect.Constructor
+import java.util.*
 
 @Entity(tableName = "user_data_table")
 data class User (
@@ -63,4 +64,13 @@ data class WeatherData  (
 
     @ColumnInfo(name = "city")
     val city: String
+)
+
+@Entity(tableName = "step_table")
+data class StepData  (
+    @PrimaryKey(autoGenerate = true)
+    var stepID: Long = 0,
+
+    @ColumnInfo(name = "steps")
+    var steps: Int? = null
 )

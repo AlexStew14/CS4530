@@ -98,6 +98,34 @@ class UserRepository(val context: Context) {
         }
     }
 
+    suspend fun getStepData() : StepData? {
+        var file = File(context.filesDir,"stepKey.txt")
+        if (file.exists()) {
+            var res : StepData? = null
+            runBlocking {
+                res = userDAO.getStepData(file.readText(Charsets.UTF_8).toLong())
+            }
+            return res
+        }
+        else {
+            return null
+        }
+    }
+
+    suspend fun insertStepData(data: StepData) {
+        runBlocking {
+            val key = userDAO.insert(data)
+            File(context.filesDir,"stepKey.txt").printWriter().use { out -> out.print(key) }
+        }
+    }
+
+    suspend fun updateStepData(data: StepData) {
+        runBlocking {
+            var key = File(context.filesDir,"stepKey.txt").readText(Charsets.UTF_8).toLong()
+            userDAO.insert(StepData(key, data.steps))
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     suspend fun getWeatherData(locMag : LocationManager, cityTV : TextView, tempTV : TextView, statusTV : TextView){
         geocoder = Geocoder(context, Locale.getDefault())

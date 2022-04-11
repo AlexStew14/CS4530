@@ -23,4 +23,10 @@ interface UserDatabaseDAO {
 
     @Query("SELECT * from weather_table WHERE weatherID = :key")
     fun getWeather(key: Long): WeatherData?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(data: StepData) : Long
+
+    @Query("SELECT * from step_table WHERE stepID = :key")
+    fun getStepData(key: Long): StepData?
 }

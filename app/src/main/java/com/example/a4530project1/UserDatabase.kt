@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@Database(entities = [User::class, FitnessGoal::class, WeatherData::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, FitnessGoal::class, WeatherData::class, StepData::class], version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase(){
 
     abstract val userDatabaseDAO: UserDatabaseDAO

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StepCounterActivity">
+    tools:context=".StepCounterActivity"
+    android:background="@drawable/background_main"
+    android:id="@+id/layout_step_counter">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,6 +16,26 @@
         android:fontFamily="@font/quicksand_regular"
         android:textSize="40dp"
         android:layout_marginTop="15dp"
+        android:id="@+id/tv_step_title"
+        />
+    <TextView
+        android:id="@+id/tv_shake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shake device to start tracking"
+        android:textSize="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_step_title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Double tap to stop tracking"
+        android:layout_below="@id/tv_shake"
+        android:textSize="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         />
 
 
@@ -42,16 +64,36 @@
             android:textSize="20dp"
             android:layout_gravity="center_horizontal"
             />
-    </LinearLayout>
-        <Button
-            android:id="@+id/btn_step_counter_onoff"
+        <TextView
+            android:id="@+id/tv_tracking_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="30dp"
-            android:text="Start Tracking" />
+            android:text="TRACKING: OFF"
+            android:textSize="20dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_step_counter_onoff"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Start Tracking" />-->
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_prev_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="30dp"
+        android:textSize="25dp"
+        android:text="Last Tracked Steps: " />
+
 
 
 
