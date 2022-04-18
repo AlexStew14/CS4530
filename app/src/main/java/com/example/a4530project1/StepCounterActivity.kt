@@ -2,11 +2,14 @@ package com.example.a4530project1
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -46,6 +49,12 @@ class StepCounterActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_step_counter)
         findViewById<RelativeLayout>(R.id.layout_step_counter).setOnClickListener(this)
+
+        if ((resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            findViewById<Button>(R.id.btn_hikes).setOnClickListener(this)
+            findViewById<Button>(R.id.btn_fitness_goals).setOnClickListener(this)
+            findViewById<Button>(R.id.btn_profile).setOnClickListener(this)
+        }
 
         mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         mStepCounter = mSensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -165,6 +174,22 @@ class StepCounterActivity : AppCompatActivity(), View.OnClickListener {
             onDoubleClick(v)
         }
         lastClickTime = clickTime
+        when (v?.id){
+            R.id.btn_hikes -> {
+                val gmmIntentURI = Uri.parse("geo:0,0?q=hikes")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentURI)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+            R.id.btn_fitness_goals -> {
+                val intent = Intent(this@StepCounterActivity, FitnessGoalsActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btn_profile -> {
+                val intent = Intent(this@StepCounterActivity, ProfileActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
 }

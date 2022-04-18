@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StepCounterActivity"
+    android:background="@drawable/background_main"
+    android:id="@+id/layout_step_counter">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Step Counter"
+        android:textSize="80dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/tv_step_title"
+        />
+    <TextView
+        android:id="@+id/tv_shake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shake device to start tracking"
+        android:textSize="36dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_step_title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Double tap to stop tracking"
+        android:layout_below="@id/tv_shake"
+        android:textSize="36dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        >
+
+        <TextView
+            android:id="@+id/tv_step_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="200dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/tv_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STEPS"
+            android:textSize="40dp"
+            android:layout_gravity="center_horizontal"
+            />
+        <TextView
+            android:id="@+id/tv_tracking_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRACKING: OFF"
+            android:textSize="40dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_step_counter_onoff"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Start Tracking" />-->
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_prev_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_bottom_buttons"
+        android:layout_centerInParent="true"
+        android:text="Last Tracked Steps: "
+        android:textSize="50dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        >
+
+        <Button
+            android:id="@+id/btn_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Profile"
+            android:textSize="24dp"/>
+        <Button
+            android:id="@+id/btn_fitness_goals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fitness Goals"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:textSize="24dp"
+            />
+        <Button
+            android:id="@+id/btn_hikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hikes"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:textSize="24dp"
+            />
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
