@@ -6,7 +6,13 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.util.Log
 import android.widget.TextView
+import com.amplifyframework.AmplifyException
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.storage.StorageException
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.*
@@ -61,6 +67,7 @@ class UserRepository(val context: Context) {
             var key = File(context.filesDir,"userKey.txt").readText(Charsets.UTF_8).toLong()
             userDAO.insert(User(key, data.name, data.age, data.city, data.country, data.height, data.weight, data.sex, data.profilePicture))
         }
+        uploadRoomToS3()
     }
 
     suspend fun insertUserData(data: User) {
@@ -68,6 +75,7 @@ class UserRepository(val context: Context) {
             val key = userDAO.insert(data)
             File(context.filesDir,"userKey.txt").printWriter().use { out -> out.print(key) }
         }
+        uploadRoomToS3()
     }
 
     suspend fun getFitnessData() : FitnessGoal? {
@@ -89,6 +97,7 @@ class UserRepository(val context: Context) {
             val key = userDAO.insert(data)
             File(context.filesDir,"fitnessKey.txt").printWriter().use { out -> out.print(key) }
         }
+        uploadRoomToS3()
     }
 
     suspend fun updateFitnessData(data: FitnessGoal) {
@@ -96,6 +105,7 @@ class UserRepository(val context: Context) {
             var key = File(context.filesDir,"fitnessKey.txt").readText(Charsets.UTF_8).toLong()
             userDAO.insert(FitnessGoal(key, data.weightGoal, data.activityLevel, data.poundsPerWeek))
         }
+        uploadRoomToS3()
     }
 
     suspend fun getStepData() : StepData? {
@@ -117,6 +127,7 @@ class UserRepository(val context: Context) {
             val key = userDAO.insert(data)
             File(context.filesDir,"stepKey.txt").printWriter().use { out -> out.print(key) }
         }
+        uploadRoomToS3()
     }
 
     suspend fun updateStepData(data: StepData) {
@@ -124,6 +135,7 @@ class UserRepository(val context: Context) {
             var key = File(context.filesDir,"stepKey.txt").readText(Charsets.UTF_8).toLong()
             userDAO.insert(StepData(key, data.steps))
         }
+        uploadRoomToS3()
     }
 
     @SuppressLint("SetTextI18n")
@@ -189,6 +201,22 @@ class UserRepository(val context: Context) {
 
     }
 
-
+    private fun uploadRoomToS3() {
+        val user_database = File(context.dataDir, "/databases/user_database")
+        val user_database_shm = File(context.dataDir, "/databases/user_database-shm")
+        val user_database_wal = File(context.dataDir, "/databases/user_database-wal")
+        Amplify.Storage.uploadFile("user_database", user_database,
+            { Log.i("MyAmplifyApp", "Successfully uploaded: ${it.key}") },
+            { Log.e("MyAmplifyApp", "Upload failed", it) }
+        )
+        Amplify.Storage.uploadFile("user_database-shm", user_database_shm,
+            { Log.i("MyAmplifyApp", "Successfully uploaded: ${it.key}") },
+            { Log.e("MyAmplifyApp", "Upload failed", it) }
+        )
+        Amplify.Storage.uploadFile("user_database-wal", user_database_wal,
+            { Log.i("MyAmplifyApp", "Successfully uploaded: ${it.key}") },
+            { Log.e("MyAmplifyApp", "Upload failed", it) }
+        )
+    }
 
 }

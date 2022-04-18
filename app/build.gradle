@@ -45,6 +45,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1'
+    implementation 'com.amplifyframework:aws-storage-s3:1.35.0'
+    implementation 'com.amplifyframework:aws-auth-cognito:1.35.0'
     //implementation 'androidx.room:room-common:2.3.0'
     //implementation 'androidx.room:room-ktx:2.3.0'
     //implementation "androidx.room:room-runtime:2.3.0"
